@@ -7,63 +7,51 @@ const cars = [
     { name: 'BMW', model: 'Coupe', price: 1500, weight: 1200, country: 'Germany'}
 ]
 
-//Map
 const allCarModels = cars.map((car) => {
     return car.model;
 })
 
-//Map
 const allCarsNameAndModels = cars.map((car) => {
     return `Model ${car.model} is made by ${car.name} in ${car.country}`;
 })
 
-//Filter
 const overPricedCars = cars.filter((car) => {
     return car.price > 1000
 })
 
-//Every
 const areAllCarsItalians = cars.every((car) => {
-    return car.country === 'Italy' // false
+    return car.country === 'Italy'
 })
 
-//Some
 const areSomeCarsItalians = cars.some((car) => {
-    return car.country === 'Italy' // true
+    return car.country === 'Italy' 
 })
 
-//Find
 const findFirstFerrariCar = cars.find((car) => {
-    return car.name = 'Ferrari'; // First Ferrari car object
+    return car.name === 'Ferrari'; 
 })
 
-//Slice
 const allCarsByCountryCode = cars.map((car) => {
-    return car.country.slice(0,2); // Fr, Gr, It etc...
+    return car.country.slice(0, 2); 
 })
 
-//Slice
-const lastCar = cars.slice(cars.length - 1, cars.length)
+const lastCar = cars[cars.length - 1];
 
-//Sort 
-const orderedByCountry = cars.sort((a, b) => a.country > b.country ? 1: -1)
+const orderedByCountry = cars.sort((a, b) => a.country > b.country ? 1 : -1)
 
-//Reduce
-let groupByCountry = cars.reduce((accumulator, currentValue) => {
+const groupByCountry = cars.reduce((accumulator, currentValue) => {
     accumulator[currentValue.country] = [...(accumulator[currentValue.country] || []), currentValue];
     return accumulator;
 }, {});
 
-//Reduce
-let allCarsOverweight = cars.reduce((accumulator, currentValue) => {
+const allCarsOverweight = cars.reduce((accumulator, currentValue) => {
     if (currentValue.weight > 800) {
         accumulator.push(currentValue)
     }
     return accumulator;
 }, []);
 
-//Splice
-let firstHalfOfCars = cars.splice(cars.length / 2);
+const firstHalfOfCars = cars.splice(cars.length / 2);
 
 console.log('Car models:', allCarModels);
 console.log('Information about the cars:', allCarsNameAndModels);
