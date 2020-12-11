@@ -1,44 +1,47 @@
-import React from "react";
+import React, { useContext } from "react";
+import'./App.scss';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  NavLink
+  Route
 } from "react-router-dom";
-import { About } from "./Pages/About";
-import { Home } from "./Pages/Home";
-import { Users } from "./Pages/Users";
+import { About } from "./pages/About/About";
+import { Home } from "./pages/Home/Home";
+import { Users } from "./pages/Users/Users";
+import { Login } from "./pages/Login/Login";
+import { AuthContext, AuthContextProvider } from "./context/authContext";
+import { Navigation } from "./components/Navigation/Navigation";
+import { UserContext, UserContextProvider } from "./context/userContext";
 
 export default function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <NavLink to="/home">Home</NavLink>
-            </li>
-            <li>
-              <NavLink to="/about">About</NavLink>
-            </li>
-            <li>
-              <NavLink to="/users">Users</NavLink>
-            </li>
-          </ul>
-        </nav>
 
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/home">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
+  const authContext = useContext(AuthContext);
+    if (authContext.isAuth) {
+      return (
+        <Router>
+          <Navigation />
+          <Switch>
+                <Route path="/home" exact>
+                  <UserContextProvider>
+                    <Home/>
+                  </UserContextProvider>
+                </Route>
+              <Route path="/about" exact>
+                <About/>
+              </Route>
+              <Route path="/users" exact>
+                <Users />
+              </Route>
+            </Switch>
+        </Router>
+      )
+    }
+
+    return (
+      <Router>
+        <Route path="/" exact>
+          <Login />
+        </Route>
+      </Router>
+    )
 }
