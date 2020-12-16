@@ -1,0 +1,21 @@
+.header {
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+
+        li {
+            display: inline-block;
+            margin: 20px;
+            text-decoration: none;
+            color: black;
+        }
+    }
+}
+
+.header a:hover,
+.header a:active {
+    color: blue;
+}
