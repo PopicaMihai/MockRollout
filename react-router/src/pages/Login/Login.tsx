@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
 import { AuthContext } from "../../context/authContext";
 import { UserContext } from "../../context/userContext";
 
