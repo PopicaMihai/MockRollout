@@ -5,6 +5,11 @@ import { HardwareService } from '../services/HardwareService';
 interface IHardwareContextState {
     hardwares?: IHardware[];
     error?: string;
+}
+
+interface IHardwareContext {
+    hardwareState: IHardwareContextState,
+    dispatchHardwareState?: (action: IAction) => void,
     updateHardware?: (id: number, hardware: IHardware) => void
 }
 
@@ -20,11 +25,16 @@ type IAction =
 
 const initialHardwareState: IHardwareContextState = {
     hardwares: [],
-    error: undefined,
+    error: ''
+}
+
+const initialContextState: IHardwareContext = {
+    hardwareState: initialHardwareState,
+    dispatchHardwareState: undefined,
     updateHardware: undefined
 }
 
-export const HardwareContext = createContext<IHardwareContextState>(initialHardwareState);
+export const HardwareContext = createContext<IHardwareContext>(initialContextState);
 
 const reducer = (state: IHardwareContextState, action: IAction): IHardwareContextState => {
     switch (action.type) {
@@ -48,26 +58,22 @@ const deleteHardware = (hardwares: IHardware[], id: number): IHardware[] => {
 }
 
 export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHardwareProviderState) => {
-    const [ getHardwareState, setHardwareState ] = useState<IHardware[]>([]);
-    const [ errorMessage, setErrorMessage ] = useState<string>('');
-    const [ state, dispatch ] = useReducer(reducer, initialHardwareState);
+    const [ hardwareState, dispatchHardwareState ] = useReducer(reducer, initialHardwareState);
 
-    async function handleGetData() {
+    const getHardware = async () => {
         await HardwareService.getHardware()
             .then(response => {
-                setHardwareState(response);
-                dispatch({
+                dispatchHardwareState({
                     type: 'GET_SUCCESS', 
-                    hardwares: getHardwareState || [],
+                    hardwares: response || [],
                     error: ''
                 });
             })
             .catch(error => {
-                setErrorMessage(error.message)
-                dispatch({
+                dispatchHardwareState({
                     type: 'GET_FAILED',
                     hardwares: [],
-                    error: errorMessage
+                    error: error.message
                 });
             })
     }
@@ -75,12 +81,9 @@ export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHard
     const updateHardware = (id: number, hardware: IHardware) => {
         HardwareService.editHardware(id, hardware)
             .then(response => {
-                setHardwareState(
-                    [...deleteHardware(getHardwareState, id), hardware]
-                );
-                dispatch({
+                dispatchHardwareState({
                     type: 'EDIT', 
-                    hardwares: getHardwareState
+                    hardwares: [...deleteHardware(hardwareState.hardwares || [], id), hardware]
                 })
             })
             .catch(error => {
@@ -89,13 +92,15 @@ export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHard
     }
 
     useEffect(() => {
-        handleGetData();
-    }, [getHardwareState, errorMessage]);
+        getHardware();
+    }, [ hardwareState ]);
 
-    const store: IHardwareContextState = {
-        hardwares: getHardwareState, error: errorMessage, updateHardware
-    }
-
+    const store: IHardwareContext = { 
+        hardwareState,
+        dispatchHardwareState,
+        updateHardware
+     }
+    
     return (
         <HardwareContext.Provider value={store}>
             {props.children}

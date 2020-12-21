@@ -15,6 +15,7 @@ export const HardwareItem: FC<IHardwareItemProps> = ({hardware, index}) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [currentHardware, setCurrentHardware] = useState<IHardware>(hardware);
     const [updateHardware, setUpdateHardare] = useState<IHardware>(currentHardware);
+
     const hardwareContext = useContext(HardwareContext);
     
 
