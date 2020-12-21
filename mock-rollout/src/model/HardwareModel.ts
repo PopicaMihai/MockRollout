@@ -1,10 +1,12 @@
-export interface IProduct {
+export interface IHardware {
+    Type: string;
     Comment?: string;
-    Floor: number;
+    Floor: string;
     InventoryNumber: string;
     Location: string;
     Model: string;
-    PlaceNumber: number;
+    PlaceNumber: string;
     Room: string;
     SerialNumber: string;
+    Image: string;
 }

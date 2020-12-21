@@ -1,0 +1,127 @@
+.hardware__item {
+    width: 90%;
+    border: 1px solid lightgray;
+    margin-top: 20px;
+    display: flex;
+    min-height: 300px;
+
+    &-info {
+        width: 70%;
+        display: flex;
+
+        .hardware__checked {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        
+            span {
+                margin-top:20px;
+                color: #65aca3;
+                background-color: #eafbf5;
+                padding: 5px;
+                width: 70%;
+                text-align: center;
+            }
+        }
+        
+        .hardware__title {
+            font-size: 25px;
+            font-weight: 700;
+            margin: 20px 20px 0 20px;
+        }
+        
+        .hardware__information {
+            display: flex;
+            width: 100%;
+        
+            &-details {
+                width: 50%;
+        
+                & > input.k-textbox {
+                    padding: 4px 8px;
+                    display: block;
+                }
+        
+                h3 {
+                    margin-bottom: 25px;
+                }
+        
+                b {
+                    color: #9d9d9d;
+                    font-weight: 500;
+                }
+        
+                p {
+                    color: #656565;
+                    font-weight: 700;
+                }
+        
+                div {
+                    display: flex;
+                    width: 100%;
+                    margin-top: 30px;
+        
+                    span {
+                        width: 50%;
+                    }
+                    
+                    .details__floor-room {
+                        display: flex;
+                        width: 50%;
+                    }
+        
+                    .details__place-number {
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: 100px;
+                    }   
+                }
+        
+                
+            }
+        }
+        .hardware__comment {
+            padding-left: 16px;
+        
+            p {
+                margin-top: 0;
+                color: #9d9d9d;
+                font-weight: 500;
+            }
+        }
+    }
+
+    &-options {
+        width: 30%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: 1px solid lightgray;
+
+        .k-button-group {
+            display: flex;
+            flex-direction: column;
+            margin: 20px 5px;
+            width: 100%;
+
+            .k-button {
+                margin: 15px;
+                max-width: 100%;
+                padding: 10px;
+                border: 2px solid orangered;
+                border-radius: 10px;
+                color: orangered;
+                font-weight: 600;
+                outline: none;
+            }
+
+            .k-state-active {
+                background-color: orangered;
+                color: #fff;
+                border: 2px solid orangered;
+                border-radius: 10px;
+            }
+        }
+
+    }
+}
