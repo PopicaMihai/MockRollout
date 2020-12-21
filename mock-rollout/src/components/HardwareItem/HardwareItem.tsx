@@ -25,7 +25,7 @@ export const HardwareItem: FC<IHardwareItemProps> = ({hardware, index}) => {
 
     const handleSubmit = () => {
         setCurrentHardware(updateHardware);
-        hardwareContext.state.updateHardware!(index, updateHardware);
+        hardwareContext.updateHardware!(index, updateHardware);
         console.log(index);
         console.log(updateHardware);
         setEditMode(false);

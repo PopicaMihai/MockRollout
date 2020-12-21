@@ -4,12 +4,11 @@ import { HardwareContext } from '../../store/HardwareContext';
 import '../dashboard/Dashboard.scss';
 
 export const Dashboard = () => {
-    const allHardware = useContext(HardwareContext).state.hardwares;
-    const errorMessage = useContext(HardwareContext).state.error;
+    const { hardwares, error } = useContext(HardwareContext)
 
     return (
         <div className='dasboard__container'>
-            {allHardware! && !errorMessage && <HardwareList hardware={allHardware!}/>}
+            {hardwares! && !error && <HardwareList hardware={hardwares!}/>}
         </div>
     )
 }
