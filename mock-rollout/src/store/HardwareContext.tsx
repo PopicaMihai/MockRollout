@@ -2,37 +2,41 @@ import React, { createContext, FC, useEffect, useState, useReducer } from 'react
 import { IHardware } from '../model/HardwareModel';
 import { HardwareService } from '../services/HardwareService';
 
-interface IState {
-    hardwares?: IHardware[] | null | undefined;
+interface IHardwareContextState {
+    hardwares?: IHardware[];
     error?: string;
+}
+
+interface IHardwareContext {
+    hardwareState: IHardwareContextState,
+    dispatchHardwareState?: (action: IAction) => void,
     updateHardware?: (id: number, hardware: IHardware) => void
 }
 
-interface IHardwareProps  {
+interface IHardwareProviderState {
     children: React.ReactNode;
 }
 
 type IAction = 
-    | { type: 'GET_SUCCESS', hardwares: IHardware[] | null, error: string }
-    | { type: 'GET_FAILED', hardwares: IHardware[] | null, error: string }
+    | { type: 'GET_SUCCESS', hardwares: IHardware[], error: string }
+    | { type: 'GET_FAILED', hardwares: IHardware[], error: string }
     | { type: 'EDIT', hardwares: IHardware[] }
 
 
-const initialHardwareState: IState = {
+const initialHardwareState: IHardwareContextState = {
     hardwares: [],
-    error: '',
-    updateHardware: (id: number, hardware: IHardware) => {}
+    error: ''
 }
 
-export const HardwareContext = createContext<{
-        state: IState, 
-        dispatch: React.Dispatch<any>;}>
-    ({
-        state: initialHardwareState, 
-        dispatch: () => null
-    });
+const initialContextState: IHardwareContext = {
+    hardwareState: initialHardwareState,
+    dispatchHardwareState: undefined,
+    updateHardware: undefined
+}
 
-const reducer = (state: IState, action: IAction): IState => {
+export const HardwareContext = createContext<IHardwareContext>(initialContextState);
+
+const reducer = (state: IHardwareContextState, action: IAction): IHardwareContextState => {
     switch (action.type) {
         case 'GET_SUCCESS': 
             return { hardwares: action.hardwares, error: '' };
@@ -53,42 +57,33 @@ const deleteHardware = (hardwares: IHardware[], id: number): IHardware[] => {
     return hardwares;
 }
 
-export const HardwareContextProvider: FC<IHardwareProps> = props => {
-    const [ getHardwareState, setHardwareState ] = useState<IState>({ hardwares: [] });
-    const [ errorMessage, setErrorMessage ] = useState<IState>({ error: '' });
-    const [ state, dispatch ] = useReducer(reducer, initialHardwareState);
-    
-    const store = { state, dispatch };
+export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHardwareProviderState) => {
+    const [ hardwareState, dispatchHardwareState ] = useReducer(reducer, initialHardwareState);
 
-    async function handleGetData() {
+    const getHardware = async () => {
         await HardwareService.getHardware()
             .then(response => {
-                setHardwareState({ hardwares: response });
-                dispatch({
+                dispatchHardwareState({
                     type: 'GET_SUCCESS', 
-                    hardwares: getHardwareState.hardwares!,
+                    hardwares: response || [],
                     error: ''
                 });
             })
             .catch(error => {
-                setErrorMessage({ error: error.message })
-                dispatch({
+                dispatchHardwareState({
                     type: 'GET_FAILED',
                     hardwares: [],
-                    error: errorMessage.error!
+                    error: error.message
                 });
             })
     }
 
-    const handleEditHardware = (id: number, hardware: IHardware) => {
+    const updateHardware = (id: number, hardware: IHardware) => {
         HardwareService.editHardware(id, hardware)
             .then(response => {
-                setHardwareState({
-                    hardwares: [...deleteHardware(getHardwareState.hardwares!, id), hardware]
-                });
-                dispatch({
+                dispatchHardwareState({
                     type: 'EDIT', 
-                    hardwares: getHardwareState.hardwares!
+                    hardwares: [...deleteHardware(hardwareState.hardwares || [], id), hardware]
                 })
             })
             .catch(error => {
@@ -96,12 +91,16 @@ export const HardwareContextProvider: FC<IHardwareProps> = props => {
         })
     }
 
-    state.updateHardware = handleEditHardware;
-
     useEffect(() => {
-        handleGetData();
-    }, [getHardwareState, errorMessage]);
+        getHardware();
+    }, [ hardwareState ]);
 
+    const store: IHardwareContext = { 
+        hardwareState,
+        dispatchHardwareState,
+        updateHardware
+     }
+    
     return (
         <HardwareContext.Provider value={store}>
             {props.children}
