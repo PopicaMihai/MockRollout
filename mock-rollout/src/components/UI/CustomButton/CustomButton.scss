@@ -1,0 +1,17 @@
+.k-button {
+    margin: 15px;
+    max-width: 100%;
+    padding: 10px;
+    border: 2px solid orangered;
+    border-radius: 10px;
+    color: orangered;
+    font-weight: 600;
+    outline: none;
+}
+
+.k-state-active {
+    background-color: orangered;
+    color: #fff;
+    border: 2px solid orangered;
+    border-radius: 10px;
+}

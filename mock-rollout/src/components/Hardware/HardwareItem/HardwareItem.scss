@@ -24,12 +24,6 @@
             }
         }
         
-        .hardware__title {
-            font-size: 25px;
-            font-weight: 700;
-            margin: 20px 20px 0 20px;
-        }
-        
         .hardware__information {
             display: flex;
             width: 100%;
@@ -76,8 +70,6 @@
                         margin-left: 100px;
                     }   
                 }
-        
-                
             }
         }
         .hardware__comment {
@@ -89,6 +81,14 @@
                 font-weight: 500;
             }
         }
+    }
+
+    &-card {
+        width: 250px;
+    }
+
+    &-body {
+        width: 900px;
     }
 
     &-options {
