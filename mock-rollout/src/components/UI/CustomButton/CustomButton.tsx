@@ -1,7 +1,7 @@
-import './CustomButton.scss';
 import { FC } from 'react';
 import { Button } from '@progress/kendo-react-buttons';
 import { ICustomButtonProps } from './Types';
+import './CustomButton.scss';
 
 export const CustomButton: FC<ICustomButtonProps> = (props: ICustomButtonProps) => {
     return (

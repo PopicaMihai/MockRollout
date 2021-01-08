@@ -1,8 +1,8 @@
 import React, { FC, Fragment, useContext } from 'react';
 import { HardwareItem } from '../HardwareItem/HardwareItem';
-import './HardwareList.scss';
-import { IHardwareListProps } from './Types';
 import { HardwareContext } from '../../../store/HardwareContext';
+import { IHardwareListProps } from './Types';
+import './HardwareList.scss';
 
 export const HardwareList: FC<IHardwareListProps> = (props: IHardwareListProps) => {
     const { deleteHardware } = useContext(HardwareContext);
@@ -22,7 +22,7 @@ export const HardwareList: FC<IHardwareListProps> = (props: IHardwareListProps) 
                     if (!item) {
                         return <Fragment key={index}/>
                     }
-                    return <HardwareItem hardware={item} key={index} deleteHardwareProps={deleteHardwareFromList}/>
+                    return <HardwareItem hardware={item} key={index} deleteHardwareAction={deleteHardwareFromList}/>
                 })}
             </div>
         </Fragment>

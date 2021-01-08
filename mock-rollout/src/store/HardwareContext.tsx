@@ -1,6 +1,6 @@
 import React, { createContext, FC, useEffect, useReducer, useContext } from 'react';
-import { IHardware } from '../models/HardwareModel';
 import { APIContext } from './ApiContext';
+import { IHardware } from '../models/HardwareModel';
 import { 
     IHardwareContextState,
     IHardwareContext,

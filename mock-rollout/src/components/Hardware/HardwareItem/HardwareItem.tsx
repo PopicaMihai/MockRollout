@@ -1,16 +1,16 @@
 import React, { ChangeEvent, FC, Fragment, useContext, useEffect, useState } from 'react';
-import './HardwareItem.scss';
-import { IHardwareItemProps } from './Types';
-import { HardwareContext } from '../../../store/HardwareContext';
-import { IHardware } from '../../../models/HardwareModel';
-import { InputTypes } from '../../../Enums/InputTypes';
-import { HardwareInfo } from '../../../Enums/HardwareInfo';
-import { hardwareInformation } from '../../../constants/hardware-types';
 import { ButtonGroup } from '@progress/kendo-react-buttons';
 import { Label } from '@progress/kendo-react-labels';
 import { Card, CardBody, CardImage } from '@progress/kendo-react-layout';
 import { InputText } from '../../UI/InputText/InputText';
 import { CustomButton } from '../../UI/CustomButton/CustomButton';
+import { InputTypes } from '../../../Enums/InputTypes';
+import { HardwareInfo } from '../../../Enums/HardwareInfo';
+import { HardwareContext } from '../../../store/HardwareContext';
+import { IHardware } from '../../../models/HardwareModel';
+import { hardwareInformation } from '../../../constants/hardware-types';
+import { IHardwareItemProps } from './Types';
+import './HardwareItem.scss';
 
 export const HardwareItem: FC<IHardwareItemProps> = (props: IHardwareItemProps) => {
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -109,7 +109,7 @@ export const HardwareItem: FC<IHardwareItemProps> = (props: IHardwareItemProps) 
                         <ButtonGroup >
                             <CustomButton icon="check" text="Yes, it's mine"/>
                             <CustomButton icon="pencil" buttonEvent={() => setEditMode(true)} text="Yes, with changes" />
-                            <CustomButton icon="cancel" buttonEvent={() => props.deleteHardwareProps(props.hardware.SerialNumber)} text="No, it's not mine" />
+                            <CustomButton icon="cancel" buttonEvent={() => props.deleteHardwareAction(props.hardware.SerialNumber)} text="No, it's not mine" />
                         </ButtonGroup>
                     }
                     {editMode &&

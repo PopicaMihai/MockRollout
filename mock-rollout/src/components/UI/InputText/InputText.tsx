@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react';
-import { IEditTextProps } from './Types';
 import { Input, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList } from '@progress/kendo-react-dropdowns';
+import { IEditTextProps } from './Types';
 import { InputTypes } from '../../../Enums/InputTypes';
 import './InputText.scss';
 
@@ -20,8 +20,6 @@ export const InputText: FC<IEditTextProps> = (props: IEditTextProps) => {
             case (InputTypes.Dropdown):
                 element = <DropDownList defaultItem={props.currentValue} data={props.data} defaultValue={props.updatedValue} onChange={props.changeHandler} name={props.name}/>
                 break;
-            default: 
-                element = <p>ERROR</p>
             }
             
     } else {
