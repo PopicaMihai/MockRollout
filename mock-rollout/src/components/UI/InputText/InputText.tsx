@@ -5,27 +5,27 @@ import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { InputTypes } from '../../../Enums/InputTypes';
 import './InputText.scss';
 
-export const InputText: FC<IEditTextProps> = ({ editMode, currentValue, updatedValue , name, changeHandler, type, data }) => {
+export const InputText: FC<IEditTextProps> = (props: IEditTextProps) => {
     let element = null;
 
-    if (editMode) {
+    if (props.editMode) {
 
-        switch(type) {
+        switch(props.type) {
             case (InputTypes.Input):
-                element = <Input defaultValue={updatedValue} onChange={changeHandler} name={name}/>
+                element = <Input defaultValue={props.updatedValue} onChange={props.changeHandler} name={props.name}/>
                 break;
             case (InputTypes.Textarea):
-                element = <TextArea defaultValue={updatedValue} onChange={changeHandler} name={name} rows={2} disabled={false}/>
+                element = <TextArea defaultValue={props.updatedValue} onChange={props.changeHandler} name={props.name} rows={2} disabled={false}/>
                 break;
             case (InputTypes.Dropdown):
-                element = <DropDownList defaultItem={currentValue} data={data} defaultValue={updatedValue} onChange={changeHandler} name={name}/>
+                element = <DropDownList defaultItem={props.currentValue} data={props.data} defaultValue={props.updatedValue} onChange={props.changeHandler} name={props.name}/>
                 break;
             default: 
                 element = <p>ERROR</p>
             }
             
     } else {
-        element = <p>{currentValue}</p>
+        element = <p>{props.currentValue}</p>
     }
 
     return (
