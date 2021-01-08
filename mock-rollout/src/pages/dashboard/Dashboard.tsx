@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
-import { HardwareList } from '../../components/HardwareList/HardwareList';
+import { HardwareList } from '../../components/Hardware/HardwareList/HardwareList';
 import { HardwareContext } from '../../store/HardwareContext';
 import '../dashboard/Dashboard.scss';
 
 export const Dashboard = () => {
-    const allHardware = useContext(HardwareContext).state.hardwares;
-    const errorMessage = useContext(HardwareContext).state.error;
+    const { hardwareState } = useContext(HardwareContext);
 
     return (
         <div className='dasboard__container'>
-            {allHardware! && !errorMessage && <HardwareList hardware={allHardware!}/>}
+            {hardwareState?.hardwares && !hardwareState?.error && <HardwareList hardwareList={hardwareState.hardwares}/>}
         </div>
     )
 }

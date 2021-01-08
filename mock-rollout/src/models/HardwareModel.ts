@@ -1,6 +1,6 @@
 export interface IHardware {
     Type: string;
-    Comment?: string;
+    Comment: string;
     Floor: string;
     InventoryNumber: string;
     Location: string;
@@ -9,4 +9,4 @@ export interface IHardware {
     Room: string;
     SerialNumber: string;
     Image: string;
-}
+};
