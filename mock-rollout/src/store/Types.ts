@@ -2,7 +2,6 @@ import { IHardware } from '../models/HardwareModel';
 
 export interface IHardwareContextState {
     hardwares?: IHardware[];
-    hardware?: IHardware;
     error?: string;
     isLoading?: boolean;
 }
