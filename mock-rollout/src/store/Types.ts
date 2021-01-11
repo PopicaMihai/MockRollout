@@ -2,7 +2,9 @@ import { IHardware } from '../models/HardwareModel';
 
 export interface IHardwareContextState {
     hardwares?: IHardware[];
+    hardware?: IHardware;
     error?: string;
+    isLoading?: boolean;
 }
 
 export interface IHardwareContext {
@@ -17,15 +19,17 @@ export interface IHardwareProviderState {
 }
 
 export type IAction = 
-    | { type: 'GET_SUCCESS', hardwares: IHardware[], error: string }
-    | { type: 'GET_FAILED', hardwares: IHardware[], error: string }
-    | { type: 'EDIT', hardwares: IHardware[] }
-    | { type: 'DELETE', hardwares: IHardware[] };
+    | { type: 'GET_SUCCESS', hardwares: IHardware[], error: string, isLoading: boolean }
+    | { type: 'GET_FAILED', hardwares: IHardware[], error: string, isLoading: boolean }
+    | { type: 'EDIT_SUCCESS', error: string, isLoading: boolean }
+    | { type: 'EDIT_FAILED', error: string, isLoading: boolean }
+    | { type: 'DELETE_SUCCESS', error: string, isLoading: boolean }
+    | { type: 'DELETE_FAILED', error: string, isLoading: boolean };
 
 export type methodType = "get" | "GET" | "delete" | "DELETE" | "head" | "HEAD" | "options" | "OPTIONS" | "post" | "POST" | "put" | "PUT" | "patch" | "PATCH" | "purge" | "PURGE" | "link" | "LINK" | "unlink" | "UNLINK" | undefined;
 
 export interface APIContextConfig {
-    callApi?: (method: methodType, url: any, data?: any) => Promise<any>
+    callApi?: (method: methodType, url: any, data?: any) => Promise<any>,
 }
 
 export interface IApiProviderState  {
