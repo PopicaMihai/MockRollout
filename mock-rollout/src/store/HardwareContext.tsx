@@ -1,37 +1,42 @@
 import React, { createContext, FC, useEffect, useReducer, useContext } from 'react';
-import { APIContext } from './ApiContext';
 import { IHardware } from '../models/HardwareModel';
+import { APIContext } from './ApiContext';
+import { ProjectContext } from './ProjectContext';
 import { 
+    IHardwareAction,
     IHardwareContextState,
     IHardwareContext,
-    IHardwareProviderState,
-    IAction
+    IHardwareProviderState
 } from './Types';
 
 const initialHardwareState: IHardwareContextState = {
     hardwares: [],
     error: '',
-};
+    isLoading: true
+}
 
 const initialContextState: IHardwareContext = {
     hardwareState: initialHardwareState,
     dispatchHardwareState: undefined,
-    updateHardware: undefined,
-    deleteHardware: undefined
+    getHardwaresByProjectName: undefined,
 };
 
 export const HardwareContext = createContext<IHardwareContext>(initialContextState);
 
-const reducer = (state: IHardwareContextState, action: IAction): IHardwareContextState => {
+const reducer = (state: IHardwareContextState, action: IHardwareAction): IHardwareContextState => {
     switch (action.type) {
-        case 'GET_SUCCESS': 
-            return { hardwares: action.hardwares, error: '' };
-        case 'GET_FAILED':
-            return { hardwares: [], error: action.error };
-        case 'EDIT':
-            return { hardwares: action.hardwares };
-        case 'DELETE':
-            return { hardwares: action.hardwares }
+        case 'GET_HARDWARE_SUCCESS': 
+            return { hardwares: action.hardwares, error: '', isLoading: false };
+        case 'GET_HARDWARE_FAILED':
+            return { hardwares: [], error: action.error, isLoading: false };
+        case 'EDIT_HARDWARE_SUCCESS':
+            return { error: '', isLoading: false };
+        case 'EDIT_HARDWARE_FAILED':
+            return { error: action.error, isLoading: false };
+        case 'DELETE_HARDWARE_SUCCESS':
+            return { error: '', isLoading: false }
+        case 'DELETE_HARDWARE_FAILED':
+            return { error: action.error, isLoading: false }
          default: 
             return state
     };
@@ -41,55 +46,84 @@ export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHard
     const [ hardwareState, dispatchHardwareState ] = useReducer(reducer, initialHardwareState);
 
     const apiContext = useContext(APIContext);
+    const projectContext = useContext(ProjectContext);
 
-    const getHardware = async () => {
+    const getHardwaresByProjectName = async (name: string) => {
+        let projectId = projectContext.projectState.projects.findIndex(project => project.name === name);
+        hardwareState.isLoading = true;
         try {
-            const response = await apiContext.callApi!('GET', '/products.json')
+            const response = await apiContext.callApi!('GET', `/projects/${projectId}/hardwares.json`)
             dispatchHardwareState({
-                type: 'GET_SUCCESS',
+                type: 'GET_HARDWARE_SUCCESS',
                 hardwares: response || [],
-                error: ''
+                error: '',
+                isLoading: false
             });
         } catch (err) {
             dispatchHardwareState({
-                type: 'GET_FAILED',
+                type: 'GET_HARDWARE_FAILED',
                 hardwares: [],
-                error: err.message
+                error: err.message,
+                isLoading: false
             });
         }
     };
 
-    const updateHardware = async (hardware: IHardware) => {
-        const hardwareId = hardwareState?.hardwares?.findIndex((item) => item?.SerialNumber === hardware.SerialNumber)
+    const updateHardwareByProjectName = async (hardware: IHardware, projectName: string) => {
+        let hardwareId = hardwareState.hardwares?.findIndex((item) => item?.SerialNumber === hardware.SerialNumber);
+        let projectId = projectContext.projectState.projects.findIndex(project => project.name === projectName);
+        hardwareState.isLoading = true;
         try {
-            await apiContext.callApi!('PUT', `/products/${hardwareId}.json`, hardware);
-            await getHardware();
+            await apiContext.callApi!('PUT', `/projects/${projectId}/hardwares/${hardwareId}.json`, hardware);
+            dispatchHardwareState({
+                type: 'EDIT_HARDWARE_SUCCESS',
+                error: '',
+                isLoading: false
+            });
+            await getHardwaresByProjectName(projectName)
+            
         } catch (err) {
-            console.log(err)
+            dispatchHardwareState({
+                type: 'EDIT_HARDWARE_FAILED',
+                error: err.message,
+                isLoading: false
+            });
         }
-        
     };
 
-    const deleteHardware = async (serialNumber: string) => {
-        const hardwareId = hardwareState?.hardwares?.findIndex((item: IHardware, index: number) => item?.SerialNumber === serialNumber);
+    const deleteHardwareByProjectName = async (serialNumber: string, projectName: string) => {
+        const hardwareId = hardwareState.hardwares?.findIndex((item: IHardware, index: number) => item?.SerialNumber === serialNumber);
+        let projectId = projectContext.projectState.projects.findIndex(project => project.name === projectName);
+        hardwareState.isLoading = true;
         try {
-            await apiContext.callApi!('DELETE', `/products/${hardwareId}.json`);
-            await getHardware()
+            await apiContext.callApi!('DELETE', `/projects/${projectId}/hardwares/${hardwareId}.json`);
+            dispatchHardwareState({
+                type: 'DELETE_HARDWARE_SUCCESS',
+                error: '',
+                isLoading: false
+            });
+            await getHardwaresByProjectName(projectName)
+
         } catch(err) {
-            console.log(err);
+            dispatchHardwareState({
+                type: 'DELETE_HARDWARE_FAILED',
+                error: err.message,
+                isLoading: false
+            });
         }
     };
 
     useEffect(() => {
-        getHardware();
+        getHardwaresByProjectName('Mockup');
     }, []);
 
-    const store: IHardwareContext = { 
+    const store: IHardwareContext = {
         hardwareState,
         dispatchHardwareState,
-        updateHardware,
-        deleteHardware
-     };
+        getHardwaresByProjectName,
+        updateHardwareByProjectName,
+        deleteHardwareByProjectName
+    };
 
     return (
         <HardwareContext.Provider value={store}>

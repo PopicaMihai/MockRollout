@@ -1,5 +1,6 @@
 import { IHardware } from '../../../models/HardwareModel';
 
 export interface IHardwareListProps {
-    hardwareList: IHardware[];
+    hardwareList?: IHardware[];
+    projectName: string;
 }

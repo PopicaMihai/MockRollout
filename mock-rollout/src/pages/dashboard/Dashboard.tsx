@@ -1,14 +1,30 @@
 import React, { useContext } from 'react';
-import { HardwareList } from '../../components/Hardware/HardwareList/HardwareList';
-import { HardwareContext } from '../../store/HardwareContext';
+import { ProjectContext } from '../../store/ProjectContext';
+import { ProjectItem } from '../../components/Project/ProjectItem/ProjectItem'; 
+import { Spinner } from '../../components/UI/Spinner/Spinner';
+import { ErrorMessage } from '../../components/UI/ErrorMessage/ErrorMessage';
 import '../dashboard/Dashboard.scss';
 
 export const Dashboard = () => {
-    const { hardwareState } = useContext(HardwareContext);
+    let dashboardContent = null;
+
+    const { projectState } = useContext(ProjectContext);
+    console.log(projectState.projects);
+
+    if (projectState.isLoading) {
+        dashboardContent = <Spinner />
+    } else {
+        dashboardContent = projectState?.projects && <ProjectItem projectList={projectState.projects} />
+    }
 
     return (
         <div className='dasboard__container'>
-            {hardwareState?.hardwares && !hardwareState?.error && <HardwareList hardwareList={hardwareState.hardwares}/>}
+            {!projectState.error &&
+                dashboardContent
+            }
+            {projectState.error &&
+                <ErrorMessage text={projectState.error} />
+            }
         </div>
     )
 }

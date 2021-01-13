@@ -2,21 +2,25 @@ import React, { ChangeEvent, FC, Fragment, useContext, useEffect, useState } fro
 import { ButtonGroup } from '@progress/kendo-react-buttons';
 import { Label } from '@progress/kendo-react-labels';
 import { Card, CardBody, CardImage } from '@progress/kendo-react-layout';
+import { HardwareContext } from '../../../store/HardwareContext';
 import { InputText } from '../../UI/InputText/InputText';
 import { CustomButton } from '../../UI/CustomButton/CustomButton';
+import { Spinner } from '../../UI/Spinner/Spinner';
+import { ErrorMessage } from '../../UI/ErrorMessage/ErrorMessage';
 import { InputTypes } from '../../../Enums/InputTypes';
 import { HardwareInfo } from '../../../Enums/HardwareInfo';
-import { HardwareContext } from '../../../store/HardwareContext';
 import { IHardware } from '../../../models/HardwareModel';
 import { hardwareInformation } from '../../../constants/hardware-types';
 import { IHardwareItemProps } from './Types';
 import './HardwareItem.scss';
 
 export const HardwareItem: FC<IHardwareItemProps> = (props: IHardwareItemProps) => {
+    let hardwareItemContent = null;
+
     const [editMode, setEditMode] = useState<boolean>(false);
     const [updatedHardware, setUpdatedHardare] = useState<IHardware>(props.hardware);
 
-    const hardwareContext = useContext(HardwareContext);
+    const { hardwareState, updateHardwareByProjectName } = useContext(HardwareContext);
 
     useEffect(() => {
         setUpdatedHardare(props.hardware)
@@ -28,7 +32,7 @@ export const HardwareItem: FC<IHardwareItemProps> = (props: IHardwareItemProps) 
     };
 
     const handleSubmitUpdatedHardware = () => {
-        hardwareContext.updateHardware!(updatedHardware);
+        updateHardwareByProjectName!(updatedHardware, props.projectName!);
         setEditMode(false);
     };
 
@@ -43,8 +47,10 @@ export const HardwareItem: FC<IHardwareItemProps> = (props: IHardwareItemProps) 
         )
     }
 
-    return (
-        <Fragment>
+    if (hardwareState.isLoading) {
+        hardwareItemContent = <Spinner />;
+    } else {
+        hardwareItemContent =
             <div className='hardware__item'>
                 <section className='hardware__item-info'>
                     <Card className='hardware__item-card'> 
@@ -120,6 +126,18 @@ export const HardwareItem: FC<IHardwareItemProps> = (props: IHardwareItemProps) 
                     }
                 </section>
             </div>
+    }
+
+    return (
+        <Fragment>
+            {!hardwareState.error &&
+                hardwareItemContent
+            }
+            {hardwareState.error &&
+                <ErrorMessage text={hardwareState.error} />
+            }
         </Fragment>
     )
 };
+
+export {}
