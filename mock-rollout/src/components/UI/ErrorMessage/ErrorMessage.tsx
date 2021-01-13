@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { ErrorMessageProps } from './Types';
+import { IErrorMessageProps } from './Types';
 import './ErrorMessage.scss';
 
-export const ErrorMessage: FC<ErrorMessageProps> = (props) => {
+export const ErrorMessage: FC<IErrorMessageProps> = (props: IErrorMessageProps) => {
     return (
         <div className={'errorMessage'}>
             <h2>An error occured:</h2>
