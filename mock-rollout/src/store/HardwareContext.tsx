@@ -52,7 +52,7 @@ export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHard
         let projectId = projectContext.projectState.projects.findIndex(project => project.name === name);
         hardwareState.isLoading = true;
         try {
-            const response = await apiContext.callApi!('GET', `/projects/${projectId}/hardwares.json`)
+            const response = await apiContext.callApi!('GET', `/projects/${projectId}/hardwares.json`);
             dispatchHardwareState({
                 type: 'GET_HARDWARE_SUCCESS',
                 hardwares: response || [],
@@ -89,6 +89,7 @@ export const HardwareContextProvider: FC<IHardwareProviderState> = (props: IHard
                 isLoading: false
             });
         }
+        
     };
 
     const deleteHardwareByProjectName = async (serialNumber: string, projectName: string) => {

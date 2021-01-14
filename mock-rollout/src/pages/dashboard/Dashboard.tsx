@@ -9,7 +9,6 @@ export const Dashboard = () => {
     let dashboardContent = null;
 
     const { projectState } = useContext(ProjectContext);
-    console.log(projectState.projects);
 
     if (projectState.isLoading) {
         dashboardContent = <Spinner />
