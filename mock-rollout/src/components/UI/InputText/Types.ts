@@ -4,9 +4,9 @@ import { InputTypes } from "../../../Enums/InputTypes";
 export interface IEditTextProps {
     editMode: boolean;
     currentValue: string;
-    updatedValue: string;
+    updatedValue?: string;
     changeHandler: (event: any) => void;
-    name: HardwareInfo;
+    name: HardwareInfo | string;
     type: InputTypes;
     data?: string[];
 }
