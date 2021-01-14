@@ -21,8 +21,8 @@ export interface IProjectContext {
 
 export interface IHardwareContext {
     hardwareState: IHardwareContextState,
-    dispatchHardwareState?: (action: IHardwareAction) => void,
-    getHardwaresByProjectName?: (name: string) => void,
+    dispatchHardwareState: (action: IHardwareAction) => void,
+    getHardwaresByProjectName: (name: string) => void,
     updateHardwareByProjectName?: (hardware: IHardware, name: string) => void,
     deleteHardwareByProjectName?: (serialNumber: string, name: string) => void
 }

@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, Fragment, useContext, useEffect, useState } fro
 import { ButtonGroup } from '@progress/kendo-react-buttons';
 import { Label } from '@progress/kendo-react-labels';
 import { Card, CardBody, CardImage } from '@progress/kendo-react-layout';
+
 import { HardwareContext } from '../../../store/HardwareContext';
 import { InputText } from '../../UI/InputText/InputText';
 import { CustomButton } from '../../UI/CustomButton/CustomButton';

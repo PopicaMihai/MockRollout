@@ -1,4 +1,5 @@
-import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
+import React, { FC, Fragment, useContext, useEffect } from 'react';
+
 import { HardwareContext } from '../../../store/HardwareContext';
 import { HardwareItem } from '../HardwareItem/HardwareItem';
 import { Spinner } from '../../UI/Spinner/Spinner';
@@ -12,7 +13,7 @@ export const HardwareList: FC<IHardwareListProps> = (props: IHardwareListProps) 
     const { hardwareState, getHardwaresByProjectName, deleteHardwareByProjectName } = useContext(HardwareContext);
 
     useEffect(() => {
-        getHardwaresByProjectName!(props.projectName);
+        getHardwaresByProjectName(props.projectName);
     }, [ props.projectName ]);
 
     const deleteHardwareFromList = (serialNumber: string) => {

@@ -1,4 +1,5 @@
 import React, { createContext, FC, useEffect, useReducer, useContext } from 'react';
+
 import { IHardware } from '../models/HardwareModel';
 import { APIContext } from './ApiContext';
 import { ProjectContext } from './ProjectContext';
@@ -17,8 +18,8 @@ const initialHardwareState: IHardwareContextState = {
 
 const initialContextState: IHardwareContext = {
     hardwareState: initialHardwareState,
-    dispatchHardwareState: undefined,
-    getHardwaresByProjectName: undefined,
+    dispatchHardwareState: (action: IHardwareAction) => {},
+    getHardwaresByProjectName: (name: string) => {},
 };
 
 export const HardwareContext = createContext<IHardwareContext>(initialContextState);

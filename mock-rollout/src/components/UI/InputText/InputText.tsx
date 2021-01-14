@@ -1,6 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import { Input, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList } from '@progress/kendo-react-dropdowns';
+
 import { IEditTextProps } from './Types';
 import { InputTypes } from '../../../Enums/InputTypes';
 import './InputText.scss';

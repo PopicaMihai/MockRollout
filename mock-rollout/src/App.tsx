@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import '@progress/kendo-theme-default/dist/all.css';
+
 import { ProjectContextProvider } from './store/ProjectContext';
 import { APIContextProvider } from './store/ApiContext';
-import { Dashboard } from './pages/dashboard/Dashboard';
+import { ProjectPage } from './pages/Project/ProjectPage';
 import './App.css';
 
 export const App: FC = () => {
@@ -10,7 +11,7 @@ export const App: FC = () => {
     <div className="App">
       <APIContextProvider>
         <ProjectContextProvider>
-          <Dashboard />
+          <ProjectPage />
         </ProjectContextProvider>
       </APIContextProvider>
     </div>
